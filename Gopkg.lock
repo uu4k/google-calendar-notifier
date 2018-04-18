@@ -14,6 +14,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/jasonlvhit/gocron"
+  packages = ["."]
+  revision = "54194c9749d48b073c9aeb2c787b6882e95dd0cd"
+
+[[projects]]
   name = "github.com/urfave/cli"
   packages = ["."]
   revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
@@ -71,6 +77,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c2c2aeb3e358d2d7c50f2914e25b08bda7f68dc62cfdec0be708c22bbbc7acca"
+  inputs-digest = "ededadceeb773cfcd898dd4509ad936357524052bcff23e01a64eee3703dac87"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -11,6 +11,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jasonlvhit/gocron"
+
 	"github.com/urfave/cli"
 
 	"golang.org/x/net/context"
@@ -81,7 +83,7 @@ func main() {
 			// Value: &cli.StringSlice{"primary"},
 			Usage: "set your calendar id.",
 		},
-		cli.Int64Flag{
+		cli.Uint64Flag{
 			Name:  "interval, i",
 			Value: 5,
 			Usage: "set notifier interval.",
@@ -92,7 +94,7 @@ func main() {
 		if len(calendars) == 0 {
 			calendars = []string{"primary"}
 		}
-		runNotifierAgent(calendars, c.Int64("interval"))
+		runNotifierAgent(calendars, c.Uint64("interval"))
 		return nil
 	}
 
@@ -105,8 +107,7 @@ func main() {
 // 前回の通知実行時間.
 var timepre = time.Now().Add(time.Minute * -5)
 
-func runNotifierAgent(calendarIDs []string, interval int64) {
-	// TODO go-scheduler
+func runNotifierAgent(calendarIDs []string, interval uint64) {
 	b, err := ioutil.ReadFile("client_secret.json")
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
@@ -123,6 +124,12 @@ func runNotifierAgent(calendarIDs []string, interval int64) {
 		log.Fatalf("Unable to retrieve Calendar client: %v", err)
 	}
 
+	scheduler := gocron.NewScheduler()
+	scheduler.Every(interval).Minutes().Do(notifier, calendarIDs, srv)
+	<-scheduler.Start()
+}
+
+func notifier(calendarIDs []string, srv *calendar.Service) {
 	timemin := timepre
 	timemax := time.Now().Add(1 * time.Minute)
 
