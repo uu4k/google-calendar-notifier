@@ -131,7 +131,7 @@ func runNotifierAgent(calendarIDs []string, interval uint64) {
 
 func notifier(calendarIDs []string, srv *calendar.Service) {
 	timemin := timepre
-	timemax := time.Now().Add(1 * time.Minute)
+	timemax := time.Now().Add(30 * time.Second)
 
 	var eventitems []*calendar.Event
 	for _, calendarID := range calendarIDs {
